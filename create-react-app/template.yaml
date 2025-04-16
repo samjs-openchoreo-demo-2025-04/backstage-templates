@@ -78,8 +78,9 @@ spec:
         description: This is ${{ parameters.component_name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
-        visibility: public
-        useLoggedInUser: true
+        repoVisibility: public
+        gitAuthorName: ${{ user.entity.metadata.name }}
+        gitAuthorEmail: ${{ user.entity.spec.profile.email }}
 
     - id: register
       name: Register
