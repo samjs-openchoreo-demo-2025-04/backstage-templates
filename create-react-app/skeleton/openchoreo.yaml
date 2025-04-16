@@ -1,0 +1,82 @@
+---
+## Sample Component kind (Namespaced)
+apiVersion: core.choreo.dev/v1
+kind: Component
+metadata:
+  name: ${{ values.component_name | dump }}
+  namespace: default-org
+  annotations:
+    core.choreo.dev/display-name: React Starter
+    core.choreo.dev/description: ${{ values.description | dump }}
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/project: ${{ values.project_name | dump }}
+    core.choreo.dev/name: ${{ values.component_name | dump }}
+spec:
+  type: WebApplication
+  source:
+    containerRegistry:
+      imageName: ghcr.io/samjs-openchoreo-demo-2025-04/${{ values.component_name | dump }}
+---
+## Sample DeploymentTrack kind (Namespaced)
+apiVersion: core.choreo.dev/v1
+kind: DeploymentTrack
+metadata:
+  name: ${{ values.component_name | dump }}-main
+  namespace: default-org
+  annotations:
+    core.choreo.dev/display-name: Main deployment track
+    core.choreo.dev/description: The main deployment track for the react-starter-image component
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/project: ${{ values.project_name | dump }}
+    core.choreo.dev/component: ${{ values.component_name | dump }}
+    core.choreo.dev/name: main
+spec: {}
+---
+## Sample Deployable Artifact kind (Namespaced)
+apiVersion: core.choreo.dev/v1
+kind: DeployableArtifact
+metadata:
+  name: ${{ values.component_name | dump }}
+  namespace: default-org
+  annotations:
+    core.choreo.dev/description: Deployable Artifact for react-starter-image with version v0.9
+    core.choreo.dev/display-name: ${{ values.component_name | dump }}
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/project: ${{ values.project_name | dump }}
+    core.choreo.dev/component: ${{ values.component_name | dump }}
+    core.choreo.dev/deployment-track: main
+    core.choreo.dev/name: ${{ values.component_name | dump }}
+spec:
+  configuration:
+    endpointTemplates:
+      - metadata:
+          name: webapp
+        spec:
+          service:
+            basePath: /
+            port: 8080
+          type: HTTP
+  targetArtifact:
+    fromImageRef:
+      tag: main
+---
+## Sample Deployment kind (Namespaced)
+apiVersion: core.choreo.dev/v1
+kind: Deployment
+metadata:
+  name: ${{ values.component_name | dump }}-dev-deployment
+  namespace: default-org
+  annotations:
+    core.choreo.dev/display-name: ${{ values.component_name | dump }} deployment
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/project: ${{ values.project_name | dump }}
+    core.choreo.dev/environment: development
+    core.choreo.dev/component: ${{ values.component_name | dump }}
+    core.choreo.dev/deployment-track: main
+    core.choreo.dev/name: ${{ values.component_name | dump }}-dev-deployment
+spec:
+  deploymentArtifactRef: ${{ values.component_name | dump }}
