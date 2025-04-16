@@ -18,7 +18,7 @@ spec:
         - project_name
       properties:
         component_name:
-          title: Name
+          title: Component Name
           type: string
           description: Unique name of the component
           ui:field: EntityNamePicker
@@ -78,6 +78,8 @@ spec:
         description: This is ${{ parameters.component_name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
+        visibility: public
+        useLoggedInUser: true
 
     - id: register
       name: Register
