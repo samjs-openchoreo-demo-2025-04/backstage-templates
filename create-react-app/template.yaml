@@ -80,7 +80,7 @@ spec:
         defaultBranch: main
         repoVisibility: public
         gitAuthorName: ${{ user.entity.metadata.name }}
-        gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+        gitAuthorEmail: sameera.madushan@gmail.com
 
     - id: register
       name: Register
