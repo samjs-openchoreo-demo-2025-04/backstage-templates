@@ -67,7 +67,7 @@ spec:
           description: ${{ parameters.description }}
           destination: ${{ parameters.repoUrl }}
           owner: ${{ parameters.owner }}
-          project_name: ${{ parameters.project_name }}
+          project_name: ${{ parameters.project_name.split('/')[1] }}
 
     - id: publish
       name: Publish
