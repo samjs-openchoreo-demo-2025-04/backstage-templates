@@ -1,5 +1,5 @@
-# ${{ values.component_name | dump }}
-${{ values.description | dump }}
+# ${{ values.component_name }}
+${{ values.description }}
 
 
 ## Access the Web Application
@@ -13,4 +13,4 @@ For this sample, we will use kubectl port-forward to access the web application.
     ```
 
 2. Access the web application from your browser using the following URL.
-    - https://${{values.component_name | dump}}-development.choreoapps.localhost:8443
+    - https://${{values.component_name }}-development.choreoapps.localhost:8443
