@@ -68,8 +68,8 @@ spec:
           destination: ${{ parameters.repoUrl }}
           owner: ${{ parameters.owner }}
           project_name: ${{ parameters.project_name.split('/')[1] }}
-          repo_owner: ${{ parameters.repoUrl.split('repo=')[1].split('/')[0] }}
-          repo_name: ${{ parameters.repoUrl.split('repo=')[1].split('/')[1] }}
+          repo_owner: ${{ parameters.repoUrl.split('owner=')[1].split('&')[0] }}
+          repo_name: ${{ parameters.repoUrl.split('repo=')[1] }}
 
     - id: publish
       name: Publish
