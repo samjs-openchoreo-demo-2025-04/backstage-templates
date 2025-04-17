@@ -9,7 +9,7 @@ metadata:
     - cra
     - openchoreo
 spec:
-  owner: web@example.com
+  owner: guests
   type: website
   parameters:
     - title: Provide some simple information

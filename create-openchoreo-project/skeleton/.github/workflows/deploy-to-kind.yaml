@@ -2,6 +2,8 @@ name: Deploy to Kind Cluster
 
 on:
   workflow_dispatch:  # manually trigger from GitHub UI
+  push:
+    branches: main
 
 jobs:
   deploy:

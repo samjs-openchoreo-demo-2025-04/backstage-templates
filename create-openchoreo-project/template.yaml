@@ -7,7 +7,7 @@ metadata:
   tags:
     - openchoreo
 spec:
-  owner: web@example.com
+  owner: guests
   type: system
   parameters:
     - title: Provide some simple information
