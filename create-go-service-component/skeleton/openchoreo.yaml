@@ -1,0 +1,86 @@
+## Sample Component kind (Namespaced)
+apiVersion: core.choreo.dev/v1
+kind: Component
+metadata:
+  name: ${{ values.component_name }}
+  namespace: default-org
+  annotations:
+    core.choreo.dev/display-name: Reading List Service
+    core.choreo.dev/description: ${{ values.description }}
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/project: ${{ values.project_name }}
+    core.choreo.dev/name: ${{ values.component_name }}
+spec:
+  type: Service
+  source:
+    containerRegistry:
+      imageName: ghcr.io/samjs-openchoreo-demo-2025-04/${{ values.component_name }}
+---
+## Sample DeploymentTrack kind (Namespaced)
+apiVersion: core.choreo.dev/v1
+kind: DeploymentTrack
+metadata:
+  name: ${{ values.component_name }}-main
+  namespace: default-org
+  annotations:
+    core.choreo.dev/display-name: Main deployment track
+    core.choreo.dev/description: The main deployment track for the ${{ values.component_name }} component
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/project: ${{ values.project_name }}
+    core.choreo.dev/component: ${{ values.component_name }}
+    core.choreo.dev/name: main
+spec: {}
+---
+## Sample Deployable Artifact kind (Namespaced)
+apiVersion: core.choreo.dev/v1
+kind: DeployableArtifact
+metadata:
+  name: ${{ values.component_name }}
+  namespace: default-org
+  annotations:
+    core.choreo.dev/description: Deployable Artifact for reading list server
+    core.choreo.dev/display-name: ${{ values.component_name }}
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/project: ${{ values.project_name }}
+    core.choreo.dev/component: ${{ values.component_name }}
+    core.choreo.dev/deployment-track: main
+    core.choreo.dev/name: ${{ values.component_name }}
+spec:
+  configuration:
+    endpointTemplates:
+      - metadata:
+          name: service-port
+        spec:
+          networkVisibilities:
+            public:
+              enable: true
+            organization:
+              enable: true
+          service:
+            basePath: /
+            port: 8080
+          type: HTTP
+  targetArtifact:
+    fromImageRef:
+      tag: latest
+---
+## Sample Deployment kind (Namespaced)
+apiVersion: core.choreo.dev/v1
+kind: Deployment
+metadata:
+  name: ${{ values.component_name }}-development-deployment
+  namespace: default-org
+  annotations:
+    core.choreo.dev/display-name: ${{ values.component_name }} deployment
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/project: ${{ values.project_name }}
+    core.choreo.dev/environment: development
+    core.choreo.dev/component: ${{ values.component_name }}
+    core.choreo.dev/deployment-track: main
+    core.choreo.dev/name: ${{ values.component_name }}-development-deployment
+spec:
+  deploymentArtifactRef: ${{ values.component_name }}
