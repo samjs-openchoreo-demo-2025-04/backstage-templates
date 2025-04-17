@@ -4,6 +4,8 @@ metadata:
   name: ${{ values.component_name }}
   annotations:
     github.com/project-slug: ${{ values.repo_owner }}/${{ values.repo_name }}
+    backstage.io/kubernetes-label-selector: 'core.choreo.dev/component=${{ values.component_name }},core.choreo.dev/organization=default-org,core.choreo.dev/project=${{ values.project_name }}'
+
 spec:
   type: website
   lifecycle: experimental
