@@ -1,44 +1,33 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: create-react-app-template
-  title: Create React App Component
-  description: Create a new CRA website project
+  name: create-openchoreo-project
+  title: Create Project
+  description: Create a new OpenChoreo project
   tags:
-    - react
-    - cra
     - openchoreo
 spec:
   owner: web@example.com
-  type: website
+  type: system
   parameters:
     - title: Provide some simple information
       required:
-        - component_name
         - owner
         - project_name
       properties:
-        component_name:
-          title: Component Name
-          type: string
-          description: Unique name of the component
-          ui:field: EntityNamePicker
-        description:
-          title: Description
-          type: string
-          description: Help others understand what this website is for.
         project_name:
           title: Project Name
           type: string
           description: Name of the project
-          ui:field: EntityPicker
-          ui:options:
-            catalogFilter:
-              - kind: System
+          ui:field: EntityNamePicker
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this project is for.
         owner:
           title: Owner
           type: string
-          description: Owner of the component
+          description: Owner of the project
           ui:field: EntityPicker
           ui:options:
             catalogFilter:
@@ -64,11 +53,10 @@ spec:
         copyWithoutRender:
           - .github/workflows/*
         values:
-          component_name: ${{ parameters.component_name }}
           description: ${{ parameters.description }}
           destination: ${{ parameters.repoUrl }}
-          owner: ${{ parameters.owner }}
-          project_name: ${{ parameters.project_name.split('/')[1] }}
+          owner: ${{ parameters.owner.split('/')[1] }}
+          project_name: ${{ parameters.project_name }}
           repo_owner: ${{ parameters.repoUrl.split('owner=')[1].split('&')[0] }}
           repo_name: ${{ parameters.repoUrl.split('repo=')[1] }}
 
@@ -78,7 +66,7 @@ spec:
       input:
         allowedHosts:
           - github.com
-        description: This is ${{ parameters.component_name }}
+        description: This is ${{ parameters.project_name }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
         repoVisibility: public
