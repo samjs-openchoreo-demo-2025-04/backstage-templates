@@ -65,7 +65,7 @@ spec:
           type: HTTP
   targetArtifact:
     fromImageRef:
-      tag: latest
+      tag: main
 ---
 ## Sample Deployment kind (Namespaced)
 apiVersion: core.choreo.dev/v1
