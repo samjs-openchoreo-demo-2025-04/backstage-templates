@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  namespace: default-org
+  name: default-org
+  description: Default OpenChoreo Organization
+spec:
+  owner: group:guests
+  type: openchoreo-org
