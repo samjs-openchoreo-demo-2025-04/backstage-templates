@@ -7,13 +7,13 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: $${{ github.repository }}
+  IMAGE_NAME: \${{ github.repository }}
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     env:
-      KUBECONFIG: $${{ github.workspace }}/kubeconfig.yaml
+      KUBECONFIG: \${{ github.workspace }}/kubeconfig.yaml
     permissions:
       contents: read
       packages: write
@@ -24,23 +24,23 @@ jobs:
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
-          registry: $${{ env.REGISTRY }}
-          username: $${{ github.actor }}
-          password: $${{ secrets.GITHUB_TOKEN }}
+          registry: \${{ env.REGISTRY }}
+          username: \${{ github.actor }}
+          password: \${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: $${{ env.REGISTRY }}/$${{ env.IMAGE_NAME }}
+          images: \${{ env.REGISTRY }}/\${{ env.IMAGE_NAME }}
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: $${{ steps.meta.outputs.tags }}
-          labels: $${{ steps.meta.outputs.labels }}
+          tags: \${{ steps.meta.outputs.tags }}
+          labels: \${{ steps.meta.outputs.labels }}
 
       # - name: Deploy to OpenChoreo
       #   run: |
@@ -50,7 +50,7 @@ jobs:
 
       # - name: Set up kubeconfig
       #   run: |
-      #     echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
+      #     echo "\${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
 
       # - name: Verify k8s cluster connection
       #   run: kubectl get nodes
