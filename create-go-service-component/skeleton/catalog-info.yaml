@@ -16,7 +16,10 @@ metadata:
   tags:
     - go
     - openchoreo
-
+  labels:
+    core.choreo.dev/name: ${{ values.component_name }}
+    core.choreo.dev/organization: ${{ values.organization_name }}
+    core.choreo.dev/project: ${{ values.project_name }}
 spec:
   type: service
   lifecycle: experimental

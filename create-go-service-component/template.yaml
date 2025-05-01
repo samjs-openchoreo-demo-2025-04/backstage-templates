@@ -11,39 +11,54 @@ spec:
   owner: guests
   type: service
   parameters:
-    - title: Fill in initial details
+    - title: OpenChoreo Component Details
       required:
-        - component_name
         - owner
+        - organization_name
         - project_name
+        - component_name
+        - component_type
       properties:
         component_name:
           title: Component Name
           type: string
-          description: Unique name of the component
+          description: Name of the component
           ui:field: EntityNamePicker
         description:
           title: Description
           type: string
-          description: Help others understand what this service is for.
+          description: Help others understand what this component is for.
         project_name:
           title: Project Name
           type: string
-          description: Name of the project
+          description: OpenChoreo project name
           ui:field: EntityPicker
           ui:options:
             catalogFilter:
               - kind: System
+        organization_name:
+          title: Organization Name
+          type: string
+          description: OpenChoreo
+        component_type:
+          title: Component Type
+          type: string
+          description: Describe the type of component you are creating
+          enum:
+            - Service
+            - WebApplication
+            - ManualTask
+            - ScheduledTask
         owner:
           title: Owner
           type: string
-          description: Owner of the component
+          description: Owner of the project
           ui:field: EntityPicker
           ui:options:
             catalogFilter:
               - kind: Group
                 spec.type: team
-    - title: Choose a location
+    - title: Github Repository Details
       required:
         - repoUrl
       properties:
@@ -68,11 +83,24 @@ spec:
           destination: ${{ parameters.repoUrl }}
           owner: ${{ parameters.owner }}
           project_name: ${{ parameters.project_name.split('/')[1] }}
+          organization_name: ${{ parameters.organization_name }}
           repo_owner: ${{ parameters.repoUrl.split('owner=')[1].split('&')[0] }}
           repo_name: ${{ parameters.repoUrl.split('repo=')[1] }}
 
+    - id: create-openchoreo-component
+      name: Create OpenChoreo Component
+      action: openchoreo:component:create
+      input:
+        orgName: ${{ parameters.organization_name }}
+        projectName: ${{ parameters.project_name.split('/')[1] }}
+        componentName: ${{ parameters.component_name }}
+        description: ${{ parameters.description }}
+        componentType: ${{ parameters.component_type }}
+        repositoryUrl: ${{ parameters.repoUrl }}
+        repositoryBranch: 'main'
+
     - id: publish
-      name: Publish
+      name: Create Component Repository
       action: publish:github
       input:
         allowedHosts:
@@ -86,7 +114,7 @@ spec:
         gitAuthorEmail: sameera.madushan@gmail.com
 
     - id: register
-      name: Register
+      name: Register OpenChoreo Component in Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}

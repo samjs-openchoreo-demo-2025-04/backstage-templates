@@ -10,7 +10,7 @@ spec:
   owner: guests
   type: system
   parameters:
-    - title: Provide some simple information
+    - title: OpenChoreo Project Details
       required:
         - owner
         - organization_name
@@ -38,7 +38,7 @@ spec:
             catalogFilter:
               - kind: Group
                 spec.type: team
-    - title: Choose a location
+    - title: Github Repository Details
       required:
         - repoUrl
       properties:
@@ -63,15 +63,15 @@ spec:
           repo_owner: ${{ parameters.repoUrl.split('owner=')[1].split('&')[0] }}
           repo_name: ${{ parameters.repoUrl.split('repo=')[1] }}
 
-    - id: create-choreo-project
-      name: Create Choreo Project
-      action: choreo:project:create
+    - id: create-openchoreo-project
+      name: Create OpenChoreo Project
+      action: openchoreo:project:create
       input:
         orgName: ${{ parameters.organization_name }}
         projectName: ${{ parameters.project_name }}
 
     - id: publish
-      name: Create GitHub Repository
+      name: Create Project Repository
       action: publish:github
       input:
         allowedHosts:
@@ -85,7 +85,7 @@ spec:
         gitAuthorEmail: sameera.madushan@gmail.com
 
     - id: register
-      name: Register Component in Catalog
+      name: Register OpenChoreo Project in Catalog
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}

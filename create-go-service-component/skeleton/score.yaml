@@ -1,0 +1,13 @@
+apiVersion: score.dev/v1b1
+metadata:
+  name: ${{ values.component_name }}
+  project: ${{ values.project_name }}
+  organization: ${{ values.component_name }}
+service:
+  ports:
+    default:
+      port: 8080
+      protocol: TCP
+containers:
+  container-one1:
+    image: .
