@@ -60,7 +60,7 @@ jobs:
 
       - name: Deploy component version to OpenChoreo
         run: |
-          curl -X POST "${{ vars.OPENCHOREO_CP_URL }}/deployments" \
+          curl -X POST "{% raw %}${{ vars.OPENCHOREO_CP_URL }}{% endraw %}/deployments" \
             -H "Content-Type: application/json" \
             --data '{
               "org_name": "{{ values.organization_name }}",
