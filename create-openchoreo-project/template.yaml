@@ -82,6 +82,7 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
         repoVisibility: public
+        protectDefaultBranch: false
         gitAuthorName: ${{ user.entity.metadata.name }}
         gitAuthorEmail: sameera.madushan@gmail.com
 
