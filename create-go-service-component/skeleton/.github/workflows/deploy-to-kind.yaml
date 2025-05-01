@@ -7,60 +7,50 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  {% raw %}
-  IMAGE_NAME: ${{ github.repository }}
-  {% endraw %}
+  IMAGE_NAME: {% raw %}${{ github.repository }}{% endraw %}
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     env:
-      {% raw %}
-      KUBECONFIG: ${{ github.workspace }}/kubeconfig.yaml
-      {% endraw %}
+      KUBECONFIG: {% raw %}${{ github.workspace }}{% endraw %}/kubeconfig.yaml
     permissions:
       contents: read
       packages: write
 
     steps:
       - uses: actions/checkout@v4
-
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
-          {% raw %}
-          registry: ${{ env.REGISTRY }}
+          registry: {% raw %}${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          {% endraw %}
+          password: ${{ secrets.GITHUB_TOKEN }}{% endraw %}         
 
       - name: Get short SHA
-        id: vars
-        {% raw %}
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
-        {% endraw %}
+        id: vars 
+        run: {% raw %}echo "SHORT_SHA=${GITHUB_SHA::7}" >> "$GITHUB_ENV"{% endraw %}
 
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
-        with:
-          {% raw %}
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          {% endraw %}
+        with:   
+          images: {% raw %}${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}{% endraw %}
+          tags: |
+            {% raw %}${{ env.SHORT_SHA }}{% endraw %}
+            main       
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
-          {% raw %}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          {% endraw %}
+          push: true          
+          tags: {% raw %}${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}{% endraw %}         
 
       - name: Deploy component version to OpenChoreo
         run: |
-          curl -X POST "{% raw %}${{ vars.OPENCHOREO_CP_URL }}{% endraw %}/deployments" \
+          curl --fail --show-error --location -X POST "{% raw %}${{ vars.OPENCHOREO_CP_URL }}{% endraw %}/deployments" \
             -H "Content-Type: application/json" \
             --data '{
               "org_name": "${{ values.organization_name }}",
