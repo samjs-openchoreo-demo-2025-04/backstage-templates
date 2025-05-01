@@ -5,7 +5,8 @@ metadata:
   description: ${{ values.description }}
   annotations:
     github.com/project-slug: ${{ values.repo_owner }}/${{ values.repo_name }}
-    backstage.io/kubernetes-label-selector: 'core.choreo.dev/component=${{ values.component_name }},core.choreo.dev/organization=default-org,core.choreo.dev/project=${{ values.project_name }}'
+    # backstage.io/kubernetes-label-selector: 'core.choreo.dev/component=${{ values.component_name }},core.choreo.dev/organization=default-org,core.choreo.dev/project=${{ values.project_name }}'
+    backstage.io/kubernetes-id: ${{ values.component_name }}
   tags:
     - react 
     - openchoreo
