@@ -34,6 +34,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           {% endraw %}
 
+      - name: Get short SHA
+        id: vars
+        {% raw %}
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+        {% endraw %}
+
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -52,18 +58,16 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           {% endraw %}
 
-      # - name: Deploy to OpenChoreo
-      #   run: |
-      #     curl -X POST "https://3a8600b737ff.ngrok.app/deployments" \
-      #       -H "Content-Type: application/json" \
-      #       --data @.github/deploy_component_request.json
-
-      # - name: Set up kubeconfig
-      #   run: |
-      #     echo "\${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
-
-      # - name: Verify k8s cluster connection
-      #   run: kubectl get nodes
-
-      # - name: Apply OpenChoreo manifests
-      #   run: kubectl apply -f openchoreo.yaml
+      - name: Deploy component version to OpenChoreo
+        run: |
+          curl -X POST "${{ vars.OPENCHOREO_CP_URL }}/deployments" \
+            -H "Content-Type: application/json" \
+            --data '{
+              "org_name": "{{ values.organization_name }}",
+              "project_name": "{{ values.project_name }}",
+              "component_name": "{{ values.component_name }}",
+              "deployment_track": "main",
+              "score_file_path": "https://raw.githubusercontent.com/{{ values.repo_owner }}/{{ values.repo_name }}/refs/heads/main/score.yaml",
+              "extension_file_path": "https://raw.githubusercontent.com/{{ values.repo_owner }}/{{ values.repo_name }}/refs/heads/main/openchoreo.score.yaml",
+              "image": "ghcr.io/{{ values.repo_owner }}/{{ values.repo_name }}:{% raw %}${{ env.SHORT_SHA }}{% endraw %}"
+            }'
