@@ -10,6 +10,9 @@ metadata:
   tags:
     - openchoreo
     - project
+  labels:
+    core.choreo.dev/organization: default-org
+    core.choreo.dev/name: ${{ values.project_name }}
   links:
     - url: https://github.com/${{ values.repo_owner }}/${{ values.repo_name }}
       title: GitHub Repo
