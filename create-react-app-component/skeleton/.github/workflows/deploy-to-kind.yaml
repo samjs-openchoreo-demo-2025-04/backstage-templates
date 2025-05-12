@@ -57,7 +57,7 @@ jobs:
               "project_name": "${{ values.project_name }}",
               "component_name": "${{ values.component_name }}",
               "deployment_track": "main",
-              "score_file_path": "https://raw.githubusercontent.com/${{ values.repo_owner }}/${{ values.repo_name }}/refs/heads/main/score.yaml",
-              "extension_file_path": "https://raw.githubusercontent.com/${{ values.repo_owner }}/${{ values.repo_name }}/refs/heads/main/openchoreo.score.yaml",
+              "score_file_path": "https://raw.githubusercontent.com/${{ values.repo_owner }}/${{ values.repo_name }}/refs/heads/main/openchoreo.yaml",
+              "extension_file_path": "https://raw.githubusercontent.com/${{ values.repo_owner }}/${{ values.repo_name }}/refs/heads/main/extension.openchoreo.yaml",
               "image": "ghcr.io/${{ values.repo_owner }}/${{ values.repo_name }}:{% raw %}${{ env.SHORT_SHA }}{% endraw %}"
             }'
